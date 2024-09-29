@@ -10,50 +10,30 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 export default function CreateListing() {
-  //const { currentUser } = useSelector((state) => state.user);
-  //const navigate = useNavigate();
+  const { currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
     imageUrls: [],
-    //name: '',
-    //description: '',
-    //address: '',
-    //type: 'rent',
-    //bedrooms: 1,
-    //bathrooms: 1,
-    //regularPrice: 50,
-    //discountPrice: 0,
-    //offer: false,
-    //parking: false,
-    //furnished: false,
+    name: '',
+    description: '',
+    address: '',
+    type: 'rent',
+    bedrooms: 1,
+    bathrooms: 1,
+    regularPrice: 50,
+    discountPrice: 0,
+    offer: false,
+    parking: false,
+    furnished: false,
   });
-  
-  console.log(formData);
-
-  
-  
-  //const [formData, setFormData] = useState({
-    //imageUrls: [],
-    //name: '',
-    //description: '',
-    //address: '',
-    //type: 'rent',
-    //bedrooms: 1,
-    //bathrooms: 1,
-    //regularPrice: 50,
-    //discountPrice: 0,
-    //offer: false,
-    //parking: false,
-    //furnished: false,
-  //});
   const [imageUploadError, setImageUploadError] = useState(false);
   const [uploading, setUploading] = useState(false);
-  //const [error, setError] = useState(false);
-  //const [loading, setLoading] = useState(false);
-  //console.log(formData);
-  
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  console.log(formData);
   const handleImageSubmit = (e) => {
-    if (files.length > 0 && files.length + formData.imageUrls.length  < 7) {
+    if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
       setUploading(true);
       setImageUploadError(false);
       const promises = [];
@@ -73,7 +53,7 @@ export default function CreateListing() {
         .catch((err) => {
           setImageUploadError('Image upload failed (2 mb max per image)');
           setUploading(false);
-      });
+        });
     } else {
       setImageUploadError('You can only upload 6 images per listing');
       setUploading(false);
@@ -111,7 +91,7 @@ export default function CreateListing() {
       imageUrls: formData.imageUrls.filter((_, i) => i !== index),
     });
   };
-/*
+
   const handleChange = (e) => {
     if (e.target.id === 'sale' || e.target.id === 'rent') {
       setFormData({
@@ -172,13 +152,13 @@ export default function CreateListing() {
       setError(error.message);
       setLoading(false);
     }
-  };*/
+  };
   return (
     <main className='p-3 max-w-4xl mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>
         Create a Listing
       </h1>
-      <form  className='flex flex-col sm:flex-row gap-4'>
+      <form onSubmit={handleSubmit} className='flex flex-col sm:flex-row gap-4'>
         <div className='flex flex-col gap-4 flex-1'>
           <input
             type='text'
@@ -188,6 +168,8 @@ export default function CreateListing() {
             maxLength='62'
             minLength='10'
             required
+            onChange={handleChange}
+            value={formData.name}
           />
           <textarea
             type='text'
@@ -195,7 +177,8 @@ export default function CreateListing() {
             className='border p-3 rounded-lg'
             id='description'
             required
-          
+            onChange={handleChange}
+            value={formData.description}
           />
           <input
             type='text'
@@ -203,7 +186,8 @@ export default function CreateListing() {
             className='border p-3 rounded-lg'
             id='address'
             required
-            
+            onChange={handleChange}
+            value={formData.address}
           />
           <div className='flex gap-6 flex-wrap'>
             <div className='flex gap-2'>
@@ -211,7 +195,8 @@ export default function CreateListing() {
                 type='checkbox'
                 id='sale'
                 className='w-5'
-                
+                onChange={handleChange}
+                checked={formData.type === 'sale'}
               />
               <span>Sell</span>
             </div>
@@ -220,7 +205,8 @@ export default function CreateListing() {
                 type='checkbox'
                 id='rent'
                 className='w-5'
-               
+                onChange={handleChange}
+                checked={formData.type === 'rent'}
               />
               <span>Rent</span>
             </div>
@@ -229,7 +215,8 @@ export default function CreateListing() {
                 type='checkbox'
                 id='parking'
                 className='w-5'
-                
+                onChange={handleChange}
+                checked={formData.parking}
               />
               <span>Parking spot</span>
             </div>
@@ -238,7 +225,8 @@ export default function CreateListing() {
                 type='checkbox'
                 id='furnished'
                 className='w-5'
-                
+                onChange={handleChange}
+                checked={formData.furnished}
               />
               <span>Furnished</span>
             </div>
@@ -247,7 +235,8 @@ export default function CreateListing() {
                 type='checkbox'
                 id='offer'
                 className='w-5'
-                
+                onChange={handleChange}
+                checked={formData.offer}
               />
               <span>Offer</span>
             </div>
@@ -261,7 +250,8 @@ export default function CreateListing() {
                 max='10'
                 required
                 className='p-3 border border-gray-300 rounded-lg'
-                
+                onChange={handleChange}
+                value={formData.bedrooms}
               />
               <p>Beds</p>
             </div>
@@ -273,7 +263,8 @@ export default function CreateListing() {
                 max='10'
                 required
                 className='p-3 border border-gray-300 rounded-lg'
-                
+                onChange={handleChange}
+                value={formData.bathrooms}
               />
               <p>Baths</p>
             </div>
@@ -285,16 +276,17 @@ export default function CreateListing() {
                 max='10000000'
                 required
                 className='p-3 border border-gray-300 rounded-lg'
-                
+                onChange={handleChange}
+                value={formData.regularPrice}
               />
               <div className='flex flex-col items-center'>
                 <p>Regular price</p>
-                
+                {formData.type === 'rent' && (
                   <span className='text-xs'>($ / month)</span>
-                
+                )}
               </div>
             </div>
-           
+            {formData.offer && (
               <div className='flex items-center gap-2'>
                 <input
                   type='number'
@@ -303,16 +295,18 @@ export default function CreateListing() {
                   max='10000000'
                   required
                   className='p-3 border border-gray-300 rounded-lg'
-                  
+                  onChange={handleChange}
+                  value={formData.discountPrice}
                 />
                 <div className='flex flex-col items-center'>
                   <p>Discounted price</p>
 
-                 
+                  {formData.type === 'rent' && (
                     <span className='text-xs'>($ / month)</span>
-                  
+                  )}
                 </div>
               </div>
+            )}
           </div>
         </div>
         <div className='flex flex-col flex-1 gap-4'>
@@ -324,7 +318,7 @@ export default function CreateListing() {
           </p>
           <div className='flex gap-4'>
             <input
-             onChange={(e) => setFiles(e.target.files)}
+              onChange={(e) => setFiles(e.target.files)}
               className='p-3 border border-gray-300 rounded w-full'
               type='file'
               id='images'
@@ -340,7 +334,6 @@ export default function CreateListing() {
               {uploading ? 'Uploading...' : 'Upload'}
             </button>
           </div>
-
           <p className='text-red-700 text-sm'>
             {imageUploadError && imageUploadError}
           </p>
@@ -364,24 +357,15 @@ export default function CreateListing() {
                 </button>
               </div>
             ))}
-
-
           <button
-          
+            disabled={loading || uploading}
             className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80'
           >
-           Create Listing
+            {loading ? 'Creating...' : 'Create listing'}
           </button>
-         
+          {error && <p className='text-red-700 text-sm'>{error}</p>}
         </div>
-        
       </form>
     </main>
   );
-
 }
-
-
-
- git config --global user.email "sivu1103.com"
-  git config --global user.name "Sivu1103"
