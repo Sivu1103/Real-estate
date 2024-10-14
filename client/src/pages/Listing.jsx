@@ -58,7 +58,7 @@ export default function Listing() {
       )}
       {listing && !loading && !error && (
         <div>
-          <Swiper navigation>
+          <Swiper navigation slidesPerView={2} spaceBetween={10}>
             {listing.imageUrls.map((url) => (
               <SwiperSlide key={url}>
                 <div
