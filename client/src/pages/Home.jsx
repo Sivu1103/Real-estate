@@ -69,7 +69,7 @@ export default function Home() {
       </div>
 
       {/* swiper */}
-      <Swiper navigation>
+      <Swiper navigation slidesPerView={4} spaceBetween={10}>
         {offerListings &&
           offerListings.length > 0 &&
           offerListings.map((listing) => (
